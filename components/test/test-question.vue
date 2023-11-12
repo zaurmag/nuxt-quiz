@@ -1,38 +1,77 @@
 <template>
   <div class="test__question">
     <div class="test__question-image">
-      <nuxt-img src="/images/test/start-screen-image.webp" width="400" />
+      <nuxt-img src="/images/test/start-screen-image.webp" width="500" />
     </div>
 
     <div class="test__question-content">
-      <div class="test__question-step">1 / 3</div>
+      <div class="test__question-step">{{ question.num }} / {{ totalQuestions }}</div>
 
-      <h2 class="test__question-title">Заголовок вопроса</h2>
+      <h2 class="test__question-title">{{ question.title }}</h2>
 
       <div class="test__question-answers">
-        <div class="test__question-variant">
-          <button class="btn test__question-variant-btn">Вариант ответа 1</button>
-          <p class="test__question-variant-caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius eum expedita laboriosam nesciunt repellendus voluptatum!</p>
-        </div>
+        <template
+          v-for="variant in question.variants"
+          :key="variant.id"
+        >
+          <div
+            v-if="!activeVariantId || activeVariantId === variant.id"
+            class="test__question-variant"
+          >
+            <button
+              class="btn test__question-variant-btn"
+              @click="selectVariant(variant.id)"
+            >
+              {{ variant.title }}
+            </button>
 
-        <div class="test__question-variant">
-          <button class="btn test__question-variant-btn">Вариант ответа 2</button>
-          <p class="test__question-variant-caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius eum expedita laboriosam nesciunt repellendus voluptatum!</p>
-        </div>
-
-        <div class="test__question-variant">
-          <button class="btn test__question-variant-btn">Вариант ответа 3</button>
-          <p class="test__question-variant-caption">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius eum expedita laboriosam nesciunt repellendus voluptatum!</p>
-        </div>
+            <p
+              v-if="activeVariantId === variant.id"
+              class="test__question-variant-caption"
+            >
+              {{ variant.desc }}
+            </p>
+          </div>
+        </template>
       </div>
 
-      <button class="btn test__question-next-btn">Далее</button>
+      <button
+        v-if="activeVariantId"
+        class="btn test__question-next-btn"
+        @click="nextStep"
+      >
+        Далее
+      </button>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const props = defineProps({
+  question: {
+    type: Object,
+    required: true
+  },
+  totalQuestions: {
+    type: Number,
+    default: null
+  }
+})
 
+const $emit = defineEmits(['next', 'select-variant'])
+
+const activeVariantId = ref()
+
+const selectVariant = (id: number) => {
+  activeVariantId.value = id
+}
+
+const nextStep = () => {
+  const isShowResult = props.question.num === props.totalQuestions
+
+  $emit('next', isShowResult)
+  activeVariantId.value = null
+}
 </script>
 
 <style scoped lang="sass">
@@ -40,6 +79,17 @@
   display: grid
   grid-gap: 2rem
   grid-auto-flow: column
+  grid-template-columns: 50% 50%
+
+  &-image
+    height: 100%
+    width: 100%
+    position: relative
+
+    img
+      object-fit: cover
+      width: 100%
+      height: 100%
 
   &-content
     display: flex
