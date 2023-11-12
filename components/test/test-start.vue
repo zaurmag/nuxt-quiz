@@ -14,7 +14,7 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque
         cupiditate deserunt fuga recusandae sed ut.</p>
 
-      <button class="test__start-start-btn">Start test</button>
+      <button class="test__start-start-btn" @click="$emit('start')">Start test</button>
     </div>
 
     <div class="test__start-image">
@@ -26,6 +26,8 @@
 <script setup>
 import gsap from 'gsap'
 import { onMounted, ref } from 'vue'
+
+defineEmits(['start'])
 
 const content = ref(null)
 
