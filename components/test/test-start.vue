@@ -1,6 +1,6 @@
 <template>
   <div class="test__start">
-    <div class="test__start-content">
+    <div class="test__start-content is-hide" ref="content">
       <h1 class="test__start-title">Заголовок</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto nobis,
         obcaecati. Atque, doloremque iure iusto libero molestiae officiis quia
@@ -23,7 +23,37 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import gsap from 'gsap'
+import { onMounted, ref } from 'vue'
+
+const content = ref(null)
+
+const gsapClearProps = ($item) => {
+  gsap.killTweensOf($item);
+  gsap.set($item, {clearProps: 'all'});
+  $item.removeAttribute('style');
+}
+
+onMounted(() => {
+  const animationOptions = {
+    ease: 'Power3.easeOut',
+    transition: 'none',
+    yPercent: -10,
+    alpha: 0,
+    duration: 0.6,
+    onStart() {
+      content.value.classList.remove('is-hide')
+    },
+    onComplete() {
+      gsapClearProps(content.value)
+    }
+  }
+
+  gsap.from(content.value, animationOptions)
+})
+
+</script>
 
 <style lang="sass" scoped>
 .test__start
@@ -36,6 +66,8 @@
     align-content: start
     justify-items: start
     grid-gap: 15px
+    //opacity: 0
+    //transform: translateY(-25%)
 
   &-start-btn
     background-color: $blue
@@ -48,7 +80,6 @@
     height: 50px
     min-width: 200px
     transition: background-color .2s ease
-    grid-row: 1 / 3
 
     &:hover
       background-color: darken($blue, 10%)

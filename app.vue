@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-cloak>
     <base-header />
 
     <main class="page__test">
@@ -24,4 +24,7 @@
     grid-template-rows: auto 1fr auto
     align-items: center
     height: 100vh
+
+  [v-cloak]
+    display: none
 </style>
