@@ -2,16 +2,20 @@
   <div class="test">
    <test-start v-if="isStart" @start="isStart = false" />
 
-    <template
-      v-for="question in questions"
-      :key="question.id"
-    >
-      <test-question
-        v-if="activeQuestionNum === question.num && !isStart"
-        :question="question"
-        :total-questions="questions.length"
-        @next="goToNextQuestion"
-      />
+    <template v-else>
+      <template
+        v-for="question in questions"
+        :key="question.id"
+      >
+        <test-question
+          v-if="activeQuestionNum === question.num && !isStart && !isResult"
+          :question="question"
+          :total-questions="questions.length"
+          @next="goToNextQuestion"
+        />
+      </template>
+
+      <test-result v-if="isResult" @restart="restartTest" />
     </template>
   </div>
 </template>
@@ -30,6 +34,11 @@ const goToNextQuestion = (isShowResult: boolean) => {
   } else {
     isResult.value = isShowResult
   }
+}
+
+const restartTest = () => {
+  isStart.value = true
+  isResult.value = false
 }
 </script>
 
