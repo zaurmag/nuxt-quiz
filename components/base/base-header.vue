@@ -2,7 +2,7 @@
   <header class="header">
     <div class="container header__container">
       <!-- Owner logo -->
-      <base-logo name="ЛОГО" url="#" />
+      <base-logo name="тест" url="#" />
 
       <!-- Partner logo -->
       <base-logo

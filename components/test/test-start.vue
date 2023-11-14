@@ -1,20 +1,12 @@
 <template>
   <div class="test__start">
     <div class="test__start-content is-hide" ref="content">
-      <h1 class="test__start-title">Заголовок</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto nobis,
-        obcaecati. Atque, doloremque iure iusto libero molestiae officiis quia
-        voluptas.</p>
+      <h1 class="test__start-title">На сколько хорошо ты знаешь таблицу умножения?</h1>
+      <p>В данном тесте определим насколько хорошо ты учил таблицу умножения в начальных классах. </p>
 
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet animi at
-        consequatur, culpa cumque dolore dolores dolorum eveniet nulla numquam
-        officia officiis optio praesentium quisquam quo, quos, vero voluptate?
-        Perferendis.</p>
+      <p>А может ты прогуливал школу и не делал уроки? Сейчас узнаем, о твоих способностях...</p>
 
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque
-        cupiditate deserunt fuga recusandae sed ut.</p>
-
-      <button class="test__start-start-btn" @click="$emit('start')">Start test</button>
+      <button class="test__start-start-btn" @click="$emit('start')">Начать тест</button>
     </div>
 
     <div class="test__start-image">
@@ -68,8 +60,6 @@ onMounted(() => {
     align-content: start
     justify-items: start
     grid-gap: 15px
-    //opacity: 0
-    //transform: translateY(-25%)
 
   &-start-btn
     background-color: $blue

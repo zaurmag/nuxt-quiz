@@ -11,11 +11,16 @@
           v-if="activeQuestionNum === question.num && !isStart && !isResult"
           :question="question"
           :total-questions="questions.length"
+          @select-variant="selectVariant"
           @next="goToNextQuestion"
         />
       </template>
 
-      <test-result v-if="isResult" @restart="restartTest" />
+      <test-result
+        v-if="isResult"
+        :score-amount="scoreAmount"
+        @restart="restartTest"
+      />
     </template>
   </div>
 </template>
@@ -26,9 +31,12 @@ import { ref } from 'vue'
 
 const isStart = ref(true)
 const isResult = ref(false)
+const scoreAmount = ref(0)
 const activeQuestionNum = ref(1)
 
-const goToNextQuestion = (isShowResult: boolean) => {
+const goToNextQuestion = (question: Iquestion) => {
+  const isShowResult = question.num === questions.length
+
   if (!isShowResult) {
     activeQuestionNum.value++
   } else {
@@ -39,6 +47,12 @@ const goToNextQuestion = (isShowResult: boolean) => {
 const restartTest = () => {
   isStart.value = true
   isResult.value = false
+  activeQuestionNum.value = 1
+  scoreAmount.value = 0
+}
+
+const selectVariant = (currentVariant: Ivariant) => {
+  scoreAmount.value += currentVariant.score
 }
 </script>
 

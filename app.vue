@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
   useSeoMeta({
-    title: 'Тест - заголовок',
+    title: 'На сколько хорошо ты знаешь таблицу умножения?',
   })
 </script>
 

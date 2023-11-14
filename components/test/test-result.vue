@@ -4,19 +4,11 @@
     <header class="test__result-header">
       <nuxt-img class="test__result-header-img" src="/images/test/start-screen-image.webp" width="80" />
 
-      <h2 class="test__result-title">Результат теста - заголовок</h2>
+      <h2 class="test__result-title">{{ currentResult.title }}</h2>
     </header>
 
     <div class="test__result-text">
-      <p>
-        <strong>
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit.
-        </strong>
-      </p>
-
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid dicta
-        doloribus error officiis quam qui!</p>
+      <p>{{ currentResult.description }}</p>
     </div>
 
     <button
@@ -34,7 +26,35 @@
 </template>
 
 <script setup lang="ts">
+import { results } from '@/config/results'
+import { onMounted, ref } from 'vue'
+
 defineEmits(['restart'])
+
+const props = defineProps({
+  scoreAmount: {
+    type: Number,
+    required: true
+  }
+})
+
+const currentResult = ref({})
+
+const setCurrentResult = () => {
+  let resultType
+
+  if (props.scoreAmount <= 10) {
+    resultType = 'bad'
+  } else if (props.scoreAmount > 11 && props.scoreAmount < 25) {
+    resultType = 'not_bad'
+  } else if (props.scoreAmount >= 25) {
+    resultType = 'good'
+  }
+
+  currentResult.value = results[resultType]
+}
+
+onMounted(setCurrentResult)
 </script>
 
 <style scoped lang="sass">

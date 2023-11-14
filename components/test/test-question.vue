@@ -47,6 +47,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const props = defineProps({
   question: {
     type: Object,
@@ -64,12 +66,14 @@ const activeVariantId = ref()
 
 const selectVariant = (id: number) => {
   activeVariantId.value = id
+
+  const currentVariant = props.question.variants.find(q => q.id === id)
+
+  $emit('select-variant', currentVariant)
 }
 
 const nextStep = () => {
-  const isShowResult = props.question.num === props.totalQuestions
-
-  $emit('next', isShowResult)
+  $emit('next', props.question)
   activeVariantId.value = null
 }
 </script>
