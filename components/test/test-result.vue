@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { results } from '@/config/results'
 import { onMounted, ref } from 'vue'
+import type { Ref } from 'vue'
 
 defineEmits(['restart'])
 
@@ -38,7 +39,7 @@ const props = defineProps({
   }
 })
 
-const currentResult = ref({})
+const currentResult: Ref<IResult> = ref({})
 
 const setCurrentResult = () => {
   let resultType
