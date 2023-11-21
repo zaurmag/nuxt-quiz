@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  alias: {
+    '@types': '~/types/index'
+  },
   css: ['@/assets/sass/main.sass'],
   vite: {
     css: {
@@ -13,6 +16,8 @@ export default defineNuxtConfig({
       },
     },
   },
-
-  modules: ['@nuxt/image']
+  modules: ['@nuxt/image'],
+  typescript: {
+    typeCheck: false
+  }
 })

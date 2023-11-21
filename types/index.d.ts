@@ -1,24 +1,18 @@
-export { ResultTypes }
-
-enum ResultTypes {
-  GOOD = 'good',
-  NOT_GOOD = 'not_bad',
-  BAD = 'bad'
-}
+export {}
 
 declare global {
-  interface Ivariant {
+  interface IVariant {
     id: number,
     title: string,
     desc: string,
     score: number
   }
 
-  interface Iquestion {
+  interface IQuestion {
     id: number,
     num: number,
     title: string,
-    variants: Array<Ivariant>
+    variants: Array<IVariant>
   }
 
   interface IResult {
@@ -27,7 +21,7 @@ declare global {
     description: string
   }
 
-  interface Iresults {
+  interface IResults {
     good: IResult,
     not_bad: IResult,
     bad: IResult

@@ -49,25 +49,24 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps({
-  question: {
-    type: Object,
-    required: true
-  },
-  totalQuestions: {
-    type: Number,
-    default: null
-  }
-})
+interface TestQuestionProps {
+  question: IQuestion,
+  totalQuestions: number
+}
 
-const $emit = defineEmits(['next', 'select-variant'])
+const props = defineProps<TestQuestionProps>()
+
+const $emit = defineEmits<{
+  (e: 'next', question: IQuestion): void
+  (e: 'select-variant', variant: IQuestion): void
+}>()
 
 const activeVariantId = ref()
 
 const selectVariant = (id: number) => {
   activeVariantId.value = id
 
-  const currentVariant = props.question.variants.find(q => q.id === id)
+  const currentVariant = props.question.variants.find((q: IQuestion) => q.id === id)
 
   $emit('select-variant', currentVariant)
 }

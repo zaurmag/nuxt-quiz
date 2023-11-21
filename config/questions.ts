@@ -1,4 +1,4 @@
-export const questions: Array<Iquestion> = [
+export const questions: Array<IQuestion> = [
   {
     id: 1,
     num: 1,

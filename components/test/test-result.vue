@@ -26,30 +26,30 @@
 </template>
 
 <script setup lang="ts">
-import { results } from '@/config/results'
+import { ResultTypes } from '~/types/enums'
+import { results } from '../../config/results'
 import { onMounted, ref } from 'vue'
+
 import type { Ref } from 'vue'
 
 defineEmits(['restart'])
 
 const props = defineProps({
-  scoreAmount: {
-    type: Number,
-    required: true
-  }
+  scoreAmount: Number,
+  required: true
 })
 
 const currentResult: Ref<IResult> = ref({})
 
 const setCurrentResult = () => {
-  let resultType
+  let resultType: string = ''
 
   if (props.scoreAmount <= 10) {
-    resultType = 'bad'
+    resultType = ResultTypes.BAD
   } else if (props.scoreAmount > 11 && props.scoreAmount < 25) {
-    resultType = 'not_bad'
+    resultType = ResultTypes.NOT_GOOD
   } else if (props.scoreAmount >= 25) {
-    resultType = 'good'
+    resultType = ResultTypes.GOOD
   }
 
   currentResult.value = results[resultType]

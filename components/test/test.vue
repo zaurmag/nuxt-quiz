@@ -26,15 +26,17 @@
 </template>
 
 <script setup lang="ts">
-import { questions } from '@/config/questions'
+import { questions } from '../../config/questions'
 import { ref } from 'vue'
 
-const isStart = ref(true)
-const isResult = ref(false)
-const scoreAmount = ref(0)
-const activeQuestionNum = ref(1)
+import type { Ref } from 'vue'
 
-const goToNextQuestion = (question: Iquestion) => {
+const isStart: Ref<boolean> = ref(true)
+const isResult: Ref<boolean> = ref(false)
+const scoreAmount: Ref<number> = ref(0)
+const activeQuestionNum: Ref<number> = ref(1)
+
+const goToNextQuestion = (question: IQuestion): void => {
   const isShowResult = question.num === questions.length
 
   if (!isShowResult) {
@@ -44,16 +46,14 @@ const goToNextQuestion = (question: Iquestion) => {
   }
 }
 
-const restartTest = () => {
+const restartTest = (): void => {
   isStart.value = true
   isResult.value = false
   activeQuestionNum.value = 1
   scoreAmount.value = 0
 }
 
-const selectVariant = (currentVariant: Ivariant) => {
+const selectVariant = (currentVariant: IVariant): void => {
   scoreAmount.value += currentVariant.score
 }
 </script>
-
-<style lang="sass" scoped></style>

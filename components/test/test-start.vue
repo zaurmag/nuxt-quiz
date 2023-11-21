@@ -1,6 +1,6 @@
 <template>
   <div class="test__start">
-    <div class="test__start-content is-hide" ref="content">
+    <div class="test__start-content is-hide" ref="$content">
       <h1 class="test__start-title">На сколько хорошо ты знаешь таблицу умножения?</h1>
       <p>В данном тесте определим насколько хорошо ты учил таблицу умножения в начальных классах. </p>
 
@@ -19,14 +19,16 @@
 import gsap from 'gsap'
 import { onMounted, ref } from 'vue'
 
+// import type { Ref } from 'vue'
+
 defineEmits(['start'])
 
-const content = ref(null)
+const $content = ref()
 
 const gsapClearProps = ($item) => {
-  gsap.killTweensOf($item);
-  gsap.set($item, {clearProps: 'all'});
-  $item.removeAttribute('style');
+  gsap.killTweensOf($item)
+  gsap.set($item, {clearProps: 'all'})
+  $item.removeAttribute('style')
 }
 
 onMounted(() => {
@@ -37,14 +39,14 @@ onMounted(() => {
     alpha: 0,
     duration: 0.6,
     onStart() {
-      content.value.classList.remove('is-hide')
+      $content.value.classList.remove('is-hide')
     },
     onComplete() {
-      gsapClearProps(content.value)
+      gsapClearProps($content.value)
     }
   }
 
-  gsap.from(content.value, animationOptions)
+  gsap.from($content.value, animationOptions)
 })
 
 </script>

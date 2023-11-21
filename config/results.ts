@@ -1,6 +1,6 @@
-import { ResultTypes } from '@/types/index.t'
+import { ResultTypes } from '~/types/enums'
 
-export const results: Iresults = {
+export const results: IResults = {
   [ResultTypes.GOOD]: {
     id: 1,
     title: 'Ты круглый отличник!',
