@@ -37,7 +37,7 @@ const scoreAmount: Ref<number> = ref(0)
 const activeQuestionNum: Ref<number> = ref(1)
 
 const goToNextQuestion = (question: IQuestion): void => {
-  const isShowResult = question.num === questions.length
+  const isShowResult: boolean = question.num === questions.length
 
   if (!isShowResult) {
     activeQuestionNum.value++

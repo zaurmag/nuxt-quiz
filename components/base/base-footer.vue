@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer is-hidden">
     <div class="container footer__container">
       <p>2023 Copyright</p>
       <p>Реклама...</p>

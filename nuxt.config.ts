@@ -1,8 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true
+    }
+  },
   alias: {
     '@types': '~/types/index'
+  },
+  app: {
+    pageTransition: false,
+    layoutTransition: false
   },
   css: ['@/assets/sass/main.sass'],
   vite: {

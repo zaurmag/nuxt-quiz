@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header is-hidden">
     <div class="container header__container">
       <!-- Owner logo -->
       <base-logo name="тест" url="#" />

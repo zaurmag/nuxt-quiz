@@ -1,52 +1,71 @@
 <template>
-  <div class="test__start">
-    <div class="test__start-content is-hide" ref="$content">
-      <h1 class="test__start-title">На сколько хорошо ты знаешь таблицу умножения?</h1>
-      <p>В данном тесте определим насколько хорошо ты учил таблицу умножения в начальных классах. </p>
+  <div class="test__start" ref="rootContainer">
+    <div class="test__start-content">
+      <h1 class="test__start-title js-animation is-hidden">
+        На сколько хорошо ты знаешь таблицу умножения?
+      </h1>
 
-      <p>А может ты прогуливал школу и не делал уроки? Сейчас узнаем, о твоих способностях...</p>
+      <div class="js-animation is-hidden">
+        <p>В данном тесте определим насколько хорошо ты учил таблицу умножения в начальных классах. </p>
 
-      <button class="test__start-start-btn" @click="$emit('start')">Начать тест</button>
+        <p>А может ты прогуливал школу и не делал уроки? Сейчас узнаем, о твоих способностях...</p>
+      </div>
+
+      <button class="test__start-start-btn js-animation is-hidden" @click="$emit('start')">Начать тест</button>
     </div>
 
-    <div class="test__start-image">
-      <nuxt-img src="/images/test/start-screen-image.webp" width="400" />
+    <div class="test__start-image is-hidden" ref="animationImg">
+      <img src="/images/test/start-screen-image.webp" width="400" alt="" />
     </div>
   </div>
 </template>
 
 <script setup>
 import gsap from 'gsap'
+import { gsapClearProps } from '../../helpers/animation'
 import { onMounted, ref } from 'vue'
-
-// import type { Ref } from 'vue'
 
 defineEmits(['start'])
 
-const $content = ref()
-
-const gsapClearProps = ($item) => {
-  gsap.killTweensOf($item)
-  gsap.set($item, {clearProps: 'all'})
-  $item.removeAttribute('style')
-}
+const rootContainer = ref(null)
+const animationImg = ref(null)
 
 onMounted(() => {
-  const animationOptions = {
+  const $animations = Array.from(rootContainer.value.querySelectorAll('.js-animation'))
+
+  gsap.from($animations, {
+    autoAlpha: 0,
+    y: '50px',
     ease: 'Power3.easeOut',
     transition: 'none',
-    yPercent: -10,
-    alpha: 0,
-    duration: 0.6,
+    duration: 1.4,
+    stagger: 0.1,
+    delay: 0.5,
     onStart() {
-      $content.value.classList.remove('is-hide')
+      $animations.forEach($el => {
+        $el.classList.remove('is-hidden');
+      })
     },
     onComplete() {
-      gsapClearProps($content.value)
+      gsapClearProps($animations)
     }
-  }
+  })
 
-  gsap.from($content.value, animationOptions)
+  gsap.from(animationImg.value, {
+    autoAlpha: 0,
+    ease: 'Power3.easeOut',
+    transition: 'none',
+    duration: 1.4,
+    delay: 0.8,
+    onStart() {
+      if (animationImg.value) {
+        animationImg.value.classList.remove('is-hidden')
+      }
+    },
+    onComplete() {
+      gsapClearProps(animationImg.value)
+    }
+  })
 })
 
 </script>
@@ -61,7 +80,7 @@ onMounted(() => {
     display: grid
     align-content: start
     justify-items: start
-    grid-gap: 15px
+    grid-gap: 2rem
 
   &-start-btn
     background-color: $blue

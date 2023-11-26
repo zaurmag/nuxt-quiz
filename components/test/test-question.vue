@@ -1,22 +1,25 @@
 <template>
-  <div class="test__question">
-    <div class="test__question-image">
-      <nuxt-img src="/images/test/start-screen-image.webp" width="500" />
+  <div class="test__question" ref="rootElement">
+    <div class="test__question-image is-hidden" data-animation="zoom">
+      <img src="/images/test/start-screen-image.webp" :alt="question.title" />
     </div>
 
     <div class="test__question-content">
       <div class="test__question-step">{{ question.num }} / {{ totalQuestions }}</div>
 
-      <h2 class="test__question-title">{{ question.title }}</h2>
+      <h2 class="test__question-title is-hidden" data-animation="fade" delay="0.5">
+        {{ question.title }}
+      </h2>
 
-      <div class="test__question-answers">
+      <div class="test__question-answers" data-animation="stagger">
         <template
           v-for="variant in question.variants"
           :key="variant.id"
         >
           <div
             v-if="!activeVariantId || activeVariantId === variant.id"
-            class="test__question-variant"
+            class="test__question-variant is-hidden"
+            data-stagger-el
           >
             <button
               class="btn test__question-variant-btn"
@@ -28,6 +31,7 @@
             <p
               v-if="activeVariantId === variant.id"
               class="test__question-variant-caption"
+              ref="questionVariantCapt"
             >
               {{ variant.desc }}
             </p>
@@ -47,7 +51,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import gsap from 'gsap'
+import { onMounted, ref, watch } from 'vue'
+
+import type { Ref } from 'vue'
 
 interface TestQuestionProps {
   question: IQuestion,
@@ -61,13 +68,19 @@ const $emit = defineEmits<{
   (e: 'select-variant', variant: IQuestion): void
 }>()
 
-const activeVariantId = ref()
+const baseAnimationOptions = {
+  ease: 'Power3.easeOut',
+  transition: 'none',
+  duration: 1.8
+}
+
+const activeVariantId: Ref<number> = ref()
+const rootElement = ref(null)
+const questionVariantCapt = ref(null)
 
 const selectVariant = (id: number) => {
   activeVariantId.value = id
-
   const currentVariant = props.question.variants.find((q: IQuestion) => q.id === id)
-
   $emit('select-variant', currentVariant)
 }
 
@@ -75,6 +88,66 @@ const nextStep = () => {
   $emit('next', props.question)
   activeVariantId.value = null
 }
+
+const runAnimationIn = () => {
+  const animationEls = Array.from(rootElement.value.querySelectorAll('[data-animation]'))
+
+  animationEls.forEach($el => {
+    switch ($el.dataset.animation) {
+      case 'fade':
+        gsap.from($el, {
+          ...baseAnimationOptions,
+          autoAlpha: 0,
+          delay: +$el.dataset.delay,
+          onStart() {
+            $el.classList.remove('is-hidden')
+          },
+        })
+        break
+
+      case 'zoom':
+        gsap.from($el, {
+          ...baseAnimationOptions,
+          autoAlpha: 0,
+          scale: 0,
+          delay: +$el.dataset.delay,
+          onStart() {
+            $el.classList.remove('is-hidden')
+          },
+        })
+        break
+
+      case 'stagger': {
+        const staggerEls = $el.querySelectorAll('[data-stagger-el]')
+
+        gsap.from(staggerEls, {
+          ...baseAnimationOptions,
+          autoAlpha: 0,
+          y: '50px',
+          delay: +$el.dataset.delay,
+          stagger: 0.1,
+          onStart() {
+            staggerEls.forEach($el => {
+              $el.classList.remove('is-hidden');
+            })
+          },
+        })
+      }
+    }
+  })
+}
+
+onMounted(runAnimationIn)
+
+watch(questionVariantCapt, el => {
+  if (el) {
+    gsap.from(el, {
+      ...baseAnimationOptions,
+      autoAlpha: 0,
+      delay: 0.3
+    })
+  }
+})
 </script>
 
 <style scoped lang="sass">
